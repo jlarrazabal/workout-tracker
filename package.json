@@ -1,0 +1,27 @@
+{
+  "name": "mongoose_skeleton",
+  "version": "1.0.0",
+  "description": "Homework 14",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "seed": "node seeders/seed.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.13.2",
+    "morgan": "^1.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlarrazabal/workout-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jlarrazabal/workout-tracker/issues"
+  },
+  "homepage": "https://github.com/jlarrazabal/workout-tracker#readme"
+}
