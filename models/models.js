@@ -23,11 +23,12 @@ const WorkoutSchema = new mongoose.Schema({
   }]
 });
 
-WorkoutSchema.virtual("totalDuration").get(function(){
-  return this.exercises.reduce((acumulator, exercise) => {
-    return acumulator + exercise.duration;
-  }, 0);
-});
+// WorkoutSchema.methods.totalDuration = function(){
+//   this.totalDuration = this.exercises.reduce((acumulator, exercise) => {
+//     return acumulator + exercise.duration;
+//   }, 0);
+//   return this.totalDuration;
+// };
 
 const Workout = mongoose.model("Workout", WorkoutSchema);
 

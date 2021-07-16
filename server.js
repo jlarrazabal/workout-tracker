@@ -6,12 +6,19 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 
 //mongoose Connection-----------------------------------------------------------
-mongoose.connect("mongodb://localhost:27017/workout", {useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true, useCreateIndex: true});
+mongoose.connect("mongodb://localhost:27017/workout", {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+  useCreateIndex: true
+});
 
 //Instance of express server----------------------------------------------------
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(express.static(path.join(__dirname, "public")));
 
 //Static Routes-----------------------------------------------------------------
@@ -32,13 +39,24 @@ app.get("/exercise", (req, res) => {
 //Get all Workouts
 app.get("/api/workouts", async (req, res) => {
   try {
-    const workoutsData = await Workout.find({});
-    if(!workoutsData.length) {
-      res.status(404).json({message:"No Workouts found in the database"});
+    // const workoutsData = await Workout.find({});
+      const workoutsData = await Workout.aggregate([
+      {
+        $addFields: {
+          "totalDuration.totalDuration": {
+            $sum: "$exercises.duration"
+          }
+        }
+      }]);
+
+    if (!workoutsData.length) {
+      res.status(404).json({
+        message: "No Workouts found in the database"
+      });
     } else {
       res.status(200).json(workoutsData);
     }
-  } catch(err) {
+  } catch (err) {
     res.status(500).json(err);
   }
 });
@@ -49,7 +67,7 @@ app.post("/api/workouts", async (req, res) => {
     const newWorkoutData = await Workout.create(req.body);
     console.log(newWorkoutData);
     res.status(200).json(newWorkoutData);
-  } catch(err) {
+  } catch (err) {
     res.status(500).json(err);
   }
 });
@@ -57,24 +75,44 @@ app.post("/api/workouts", async (req, res) => {
 app.put("/api/workouts/:id", async (req, res) => {
   try {
     console.log(req.body);
-    const workoutData = await Workout.findByIdAndUpdate({_id: req.params.id}, {$push: {exercises: req.body}});
+    const workoutData = await Workout.findByIdAndUpdate({
+      _id: req.params.id
+    }, {
+      $push: {
+        exercises: req.body
+      }
+    });
     console.log(workoutData);
     res.status(200).json(req.body);
-  } catch(err) {
+  } catch (err) {
     res.status(500).json(err);
   }
 });
 
-app.get("/api/workouts/range", async (req, res) => {
+app.get("/api/workouts/range", async (req, res) => { //Work In progress
   try {
-    const workoutsData = await Workout.find({}).sort({day: -1}).limit(7);
+    const workoutsData = await Workout.aggregate([{
+    $sort: {day: -1}
+    },
+    {
+      $limit: 7
+    },
+    {
+      $addFields: {
+        "totalDuration.totalDuration": {
+          $sum: "$exercises.duration"
+        }
+      }
+    }]);
     const workouts = workoutsData.reverse();
-    if(!workouts.length) {
-      res.status(404).json({message:"No Workouts found in the database"});
+    if (!workouts.length) {
+      res.status(404).json({
+        message: "No Workouts found in the database"
+      });
     } else {
       res.status(200).json(workouts);
     }
-  } catch(err) {
+  } catch (err) {
     res.status(500).json(err);
   }
 });
