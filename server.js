@@ -39,7 +39,6 @@ app.get("/exercise", (req, res) => {
 //Get all Workouts
 app.get("/api/workouts", async (req, res) => {
   try {
-    // const workoutsData = await Workout.find({});
       const workoutsData = await Workout.aggregate([
       {
         $addFields: {
@@ -72,6 +71,7 @@ app.post("/api/workouts", async (req, res) => {
   }
 });
 
+//Add Excercise to Workout
 app.put("/api/workouts/:id", async (req, res) => {
   try {
     console.log(req.body);
@@ -89,6 +89,7 @@ app.put("/api/workouts/:id", async (req, res) => {
   }
 });
 
+//Get Data for the Workout Dashboard
 app.get("/api/workouts/range", async (req, res) => { //Work In progress
   try {
     const workoutsData = await Workout.aggregate([{
