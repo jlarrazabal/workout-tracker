@@ -118,11 +118,12 @@ app.get("/api/workouts/range", async (req, res) => { //Work In progress
   }
 });
 
-//Catch all Route
+//Catch all Route---------------------------------------------------------------
 app.get("*", (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`);
 });
 
+//Port Listener-----------------------------------------------------------------
 app.listen(PORT, () => {
   console.log("Server running!");
 });
