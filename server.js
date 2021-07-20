@@ -34,10 +34,6 @@ app.get("/exercise", (req, res) => {
   res.sendFile(`${__dirname}/public/exercise.html`);
 });
 
-// app.get("*", (req, res) => {
-//   res.sendFile(`${__dirname}/public/index.html`);
-// });
-
 //Api Routes--------------------------------------------------------------------
 
 //Get all Workouts
@@ -124,4 +120,9 @@ app.get("/api/workouts/range", async (req, res) => { //Work In progress
 
 app.listen(PORT, () => {
   console.log("Server running!");
+});
+
+//Catch all Route
+app.get("*", (req, res) => {
+  res.sendFile(`${__dirname}/public/index.html`);
 });
