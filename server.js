@@ -34,6 +34,10 @@ app.get("/exercise", (req, res) => {
   res.sendFile(`${__dirname}/public/exercise.html`);
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(`${__dirname}/public/index.html`);
+});
+
 //Api Routes--------------------------------------------------------------------
 
 //Get all Workouts
